@@ -1,9 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import AWS from 'aws-sdk';
 
-
-
-
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 async function createAuction(event, context) {
