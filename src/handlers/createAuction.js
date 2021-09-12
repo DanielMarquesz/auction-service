@@ -5,7 +5,6 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 async function createAuction(event, context) {
 
   const { title } = JSON.parse(event.body);
-
   const now = new Date();
 
   const auction = {
@@ -15,10 +14,8 @@ async function createAuction(event, context) {
     createdAt: now.toISOString(),
   };
 
-  console.log('nome tabela:' + process.env.AUCTIONS_TABLE_NAME)
-
   await dynamodb.put({
-    TableName: 'AuctionsTable-dev',
+    TableName: process.env.AUCTIONS_TABLE_NAME,
     Item: auction,
   }).promise();
 
