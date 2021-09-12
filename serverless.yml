@@ -1,5 +1,6 @@
 service:
   name: auction-service
+  configValidationMode: error
 
 plugins:
   - serverless-bundle
@@ -14,12 +15,10 @@ provider:
   enviroment:
     AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
   iamRoleStatements:
-      - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
-
+    - ${file(./iam/AuctionsTableIAM.yml):AuctionsTableIAM}
 resources:
   Resources:
-    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
-      
+    AuctionsTable: ${file(./resources/AuctionsTable.yml):AuctionsTable}      
 functions:
   createAuction:
     handler: src/handlers/createAuction.handler
