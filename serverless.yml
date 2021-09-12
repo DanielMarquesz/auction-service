@@ -11,15 +11,13 @@ provider:
   memorySize: 256
   stage: ${opt:stage, 'dev'}
   region: us-east-1
-  enviroment:
+  environment:
     AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
   iamRoleStatements:
-      - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
-
+    - ${file(./iam/AuctionsTableIAM.yml):AuctionsTableIAM}
 resources:
   Resources:
-    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
-      
+    AuctionsTable: ${file(./resources/AuctionsTable.yml):AuctionsTable}      
 functions:
   createAuction:
     handler: src/handlers/createAuction.handler
@@ -27,6 +25,20 @@ functions:
       - http:
           method: POST
           path: /auction
+          
+  getAuctions:
+    handler: src/handlers/getAuctions.handler
+    events:
+      - http:
+          method: GET
+          path: /auctions
+
+  getAuction:
+    handler: src/handlers/getAuction.handler
+    events:
+      - http:
+          method: GET
+          path: /auction/{id}
 
 custom:
   AuctionsTable:

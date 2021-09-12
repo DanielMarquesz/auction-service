@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import AWS from 'aws-sdk';
 import middy from '@middy/core';
 import httpJsonBodyParser from '@middy/http-json-body-parser';
@@ -8,35 +7,28 @@ import createError from 'http-errors';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-async function createAuction(event, context) {
+async function getAuctions(event, context) {
 
-  const { title } = event.body;
-  const now = new Date();
-
-  const auction = {
-    id: uuid(),
-    title,
-    status: 'OPEN',
-    createdAt: now.toISOString(),
-  };
+  let auctions;
 
   try {
-    await dynamodb.put({
-      TableName: process.env.AUCTIONS_TABLE_NAME,
-      Item: auction,
+    const result = await dynamodb.scan({
+      TableName: process.env.AUCTIONS_TABLE_NAME
     }).promise();
+
+    auctions = result.Items;
   } catch (error) {
     console.log(error);
-    throw new createError.InternalServerError(error)
+    throw new createError.InternalServerError(error);
   }
 
   return {
-    statusCode: 201,
-    body: JSON.stringify(auction),
+    statusCode: 200,
+    body: JSON.stringify(auctions),
   };
 }
 
-export const handler = middy(createAuction)
+export const handler = middy(getAuctions)
   .use(httpJsonBodyParser())
   .use(httpEventNormalizer())
   .use(httpErrorHandler());
