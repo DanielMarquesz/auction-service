@@ -12,6 +12,10 @@ async function placeBid(event, context) {
 
   let auction = await getAuctionById(id);
 
+  if (auction.status !== 'OPEN') {
+    throw new createError.Forbidden('You cannot bid on closed auctions!');
+  }
+
   if (!auction) {
     throw new createError.NotFound();
   }
