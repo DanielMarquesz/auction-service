@@ -5,11 +5,13 @@
 <br>
 In this project im use the following resources of AWS:
 
-- lambda
+- Lambda
 - API Gateway 
 - DynamoDb
 
 <br>
+
+##### An auction is close after one hour and you need to uncomment the line 54 and 55 in the serverless.yml.^^
 
 ## Routes
 
