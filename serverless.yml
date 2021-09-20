@@ -52,7 +52,7 @@ functions:
   processAuctions:
     handler: src/handlers/processAuctions.handler
     # events:
-    #   - schedule: rate(1 year)
+    #   - schedule: rate(1 hour)
 
 custom:
   AuctionsTable:
