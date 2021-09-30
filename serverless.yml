@@ -48,6 +48,13 @@ functions:
       - http:
           method: PATCH
           path: /auction/{id}/bid
+  
+  deleteAuction:
+    handler: src/handlers/deleteAuction.handler
+    events:
+      - http:
+          method: DELETE
+          path: /auction/{id}
 
   processAuctions:
     handler: src/handlers/processAuctions.handler
