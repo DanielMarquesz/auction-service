@@ -8,23 +8,15 @@ async function deleteAuction(event, context) {
   console.log(event)
   const { id } = event.pathParameters;
 
-  // const hasAuction = await getAuctionById(id)
-
-  // if (!hasAuction) {
-  //   createError.NotFound('Auction Not Found')
-  // }
-  // console.log(`Chegou até aqui: ${hasAuction} ID: ${id}`)
   try {
-    // console.log(`Chegou até aqui: ${hasAuction} ID: ${id}`)
     await dynamodb.delete({
       TableName: process.env.AUCTIONS_TABLE_NAME,
       Key: {
-        HashKey: 'HASH'
+        id: id
       }
-    }).promise()
+    }).promise().then(response => { message: 'deleted' })
   } catch (error) {
-    createError.BadRequest(error)
-    // console.log(`Chegou até aqui: ${hasAuction} Error: ${error}`)
+    throw new createError.BadRequest(error)
   }
 
   return {
